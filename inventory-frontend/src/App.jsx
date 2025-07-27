@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     fetchProducts();
 
-    const socket = io('https://inventory-backend-pve3.onrender.com ');
+    const socket = io('https://inventory-backend-pve3.onrender.com');
     socket.on('connect', () => console.log('🟢 WebSocket connected'));
     socket.on('product-updated', () => fetchProducts());
     return () => socket.disconnect();
@@ -27,7 +27,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('https://inventory-backend-pve3.onrender.com/api/products ');
+      const res = await axios.get('https://inventory-backend-pve3.onrender.com/api/products');
       setProducts(res.data);
       setError('');
     } catch (err) {
