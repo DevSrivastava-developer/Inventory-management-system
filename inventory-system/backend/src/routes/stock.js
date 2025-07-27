@@ -12,5 +12,22 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+router.post('/', async (req, res) => {
+  const { name, sku, stock, threshold } = req.body;
 
+  if (!name || !sku || stock == null || threshold == null) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const [newProduct] = await db('products')
+      .insert({ name, sku, stock, threshold })
+      .returning('*');
+
+    res.status(201).json(newProduct);
+  } catch (err) {
+    console.error('❌ Error inserting product:', err);
+    res.status(500).json({ error: 'Database error: ' + err.message });
+  }
+});
 export default router;
