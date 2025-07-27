@@ -1,24 +1,27 @@
 import { MongoClient } from 'mongodb';
 
-const MONGO_URI = process.env.MONGO_URL ||
+const MONGO_URI = process.env.MONGO_URL || 'mongodb://localhost:27017';
 const DB_NAME = 'inventory';
 const COLLECTION_NAME = 'low_stock_alerts';
 
-let collection;
+let collection; // declared globally for reuse
+let connected = false;
 
-async function connectToMongo() {
+// Initialize Mongo lazily
+async function initMongo() {
+  if (connected) return;
   const client = new MongoClient(MONGO_URI);
-  await client.connect(); // ✅ Safe now
+  await client.connect();
   const db = client.db(DB_NAME);
   collection = db.collection(COLLECTION_NAME);
+  connected = true;
   console.log('✅ MongoDB connected');
 }
 
+// Main export
 export async function logToMongo(products) {
   try {
-    if (!collection) {
-      await connectToMongo(); // ensure connected
-    }
+    await initMongo(); // ensures safe connection
 
     const timestamp = new Date();
     const entries = products.map(p => ({
