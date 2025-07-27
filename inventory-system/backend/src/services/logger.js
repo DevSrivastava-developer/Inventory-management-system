@@ -4,14 +4,22 @@ const MONGO_URI = process.env.MONGO_URL ||
 const DB_NAME = 'inventory';
 const COLLECTION_NAME = 'low_stock_alerts';
 
-const client = new MongoClient(MONGO_URI);
-await client.connect(); // ensures Mongo is connected before logging
+let collection;
 
-const db = client.db(DB_NAME);
-const collection = db.collection(COLLECTION_NAME);
+async function connectToMongo() {
+  const client = new MongoClient(MONGO_URI);
+  await client.connect(); // ✅ Safe now
+  const db = client.db(DB_NAME);
+  collection = db.collection(COLLECTION_NAME);
+  console.log('✅ MongoDB connected');
+}
 
 export async function logToMongo(products) {
   try {
+    if (!collection) {
+      await connectToMongo(); // ensure connected
+    }
+
     const timestamp = new Date();
     const entries = products.map(p => ({
       productId: p.id,
