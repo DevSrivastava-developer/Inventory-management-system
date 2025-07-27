@@ -7,6 +7,7 @@ export default function (pg) {
       const products = await pg('products').select('*');
       res.json(products);
     } catch (err) {
+      console.error('❌ Error fetching products:', err); // ✅ Log full error to backend logs
       res.status(500).send('DB error: ' + err.message);
     }
   });
