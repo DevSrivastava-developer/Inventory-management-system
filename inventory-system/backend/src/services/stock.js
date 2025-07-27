@@ -34,7 +34,7 @@ export async function lowStockScanner() {
     });
 
   } catch (err) {
-    console.error('❌ Error in lowStockScanner:', err.message);
+    console.error('❌ Error in lowStockScanner:', err);
   }
 }
 
