@@ -30,4 +30,42 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Database error: ' + err.message });
   }
 });
+// ✅ PUT update product by ID
+router.put('/:id', async (req, res) => {
+  const { name, sku, stock, threshold } = req.body;
+  const { id } = req.params;
+
+  try {
+    const updated = await db('products')
+      .where({ id })
+      .update({ name, sku, stock, threshold })
+      .returning('*');
+
+    if (updated.length === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ DELETE product by ID
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await db('products').where({ id }).del();
+
+    if (deleted === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({ message: 'Product deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;
