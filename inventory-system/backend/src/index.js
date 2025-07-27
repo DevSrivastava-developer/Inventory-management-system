@@ -2,7 +2,6 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
-import db from './utils/db.js'; // ✅ PostgreSQL instance
 import productRoutes from './routes/stock.js';
 import { lowStockScanner } from './services/stock.js';
 
@@ -31,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ Fix: Pass db to productRoutes
-app.use('/api/products', productRoutes(db));
+app.use('/api/products', productRoutes);
 
 // ✅ Scanner
 setInterval(lowStockScanner, 60000);
