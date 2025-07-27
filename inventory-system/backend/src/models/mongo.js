@@ -4,6 +4,9 @@ dotenv.config();
 import mongoose from 'mongoose';
 
 mongoose.connect(process.env.MONGO_URL);
+mongoose.connection.once('open', () => {
+  console.log('✅ MongoDB connected successfully.');
+});
 
 export const Log = mongoose.model('Log', new mongoose.Schema({
   ts: { type: Date, default: Date.now },
