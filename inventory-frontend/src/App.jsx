@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     fetchProducts();
 
-    const socket = io('http://localhost:5000');
+    const socket = io('https://inventory-backend-pve3.onrender.com ');
     socket.on('connect', () => console.log('🟢 WebSocket connected'));
     socket.on('product-updated', () => fetchProducts());
     return () => socket.disconnect();
@@ -27,7 +27,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/products');
+      const res = await axios.get('https://inventory-backend-pve3.onrender.com/api/products ');
       setProducts(res.data);
       setError('');
     } catch (err) {
@@ -42,7 +42,7 @@ function App() {
 
   const saveStock = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/products/${id}`, {
+      await axios.put(`https://inventory-backend-pve3.onrender.com/api/products/${id}`, {
         stock: parseInt(newStock),
       });
       setEditingId(null);
@@ -93,7 +93,7 @@ function App() {
                 threshold: parseInt(form.threshold.value),
               };
               try {
-                await axios.post('http://localhost:5000/api/products', data);
+                await axios.post('https://inventory-backend-pve3.onrender.com/api/products', data);
                 form.reset();
                 fetchProducts();
               } catch {
@@ -168,7 +168,7 @@ function App() {
                       <button
                         onClick={async () => {
                           if (confirm(`Delete ${p.name}?`)) {
-                            await axios.delete(`http://localhost:5000/api/products/${p.id}`);
+                            await axios.delete(`https://inventory-backend-pve3.onrender.com/api/products/${p.id}`);
                             fetchProducts();
                           }
                         }}
