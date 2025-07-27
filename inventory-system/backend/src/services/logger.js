@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const MONGO_URI = process.env.MONGO_URL || 'mongodb://localhost:27017';
+const MONGO_URI = process.env.MONGO_URL ||
 const DB_NAME = 'inventory';
 const COLLECTION_NAME = 'low_stock_alerts';
 
